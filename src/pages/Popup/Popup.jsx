@@ -6,20 +6,24 @@ import './Popup.css';
 const Popup = () => {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edita <code>src/pages/Popup/Popup.jsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React!
-        </a>
-      </header>
+      <div class="container">
+        <p class="description">Set a time to end the Google Meet call</p>
+
+        <div class="input-group">
+          <input type="time" id="end-time-input" placeholder="HH:MM" />
+          <div class="preset-buttons">
+            <button id="set-30-mins">19:30</button>
+            <button id="set-45-mins">19:45</button>
+            <button id="set-1-hour">20:00</button>
+          </div>
+        </div>
+        <button id="set-timer">Start</button>
+      </div>
+      <hr />
+      <div class="footer-container">
+        <span>Meet Timer</span>
+        <p>Version 1.0</p>
+      </div>
     </div>
   );
 };
