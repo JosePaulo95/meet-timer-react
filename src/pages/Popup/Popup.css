@@ -1,6 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Sofia+Sans:ital,wght@0,1..1000;1,1..1000&display=swap');
+
+@font-face {
+  font-family: 'Metropolis';
+  src: url('../../assets/fonts/metropolis.medium.otf') format('opentype');
+  font-weight: 500;
+  /* Peso para Medium */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Metropolis';
+  src: url('../../assets/fonts/metropolis.light.otf') format('opentype');
+  font-weight: 300;
+  /* Peso para Light */
+  font-style: normal;
+}
+
 .App {
-  font-family: Arial, sans-serif;
+  font-family: "Metropolis";
+  font-weight: 300;
+  /* Usando a variante Medium */
+  /* font-family: Arial, sans-serif; */
   width: 300px;
+  background-color: #202124;
+  color: white;
 }
 
 #status {
@@ -11,12 +34,17 @@ button {
   margin-top: 10px;
 }
 
+#end-time-input {
+  font-family: 'Metropolis';
+  border-radius: 5px;
+}
+
 .footer-container {
   display: flex;
   align-items: center;
   /* Centraliza horizontalmente os itens */
   justify-content: space-between;
-  height: 3vh;
+  height: 5vh;
   padding: 10px;
   /* Ajuste conforme necessário, ou use altura específica */
 }
@@ -32,9 +60,10 @@ button {
 }
 
 .description {
+  max-width: 70%;
   font-size: 16px;
   margin-bottom: 20px;
-  margin-top: 0px;
+  margin-top: 10px;
   text-align: center;
 }
 
@@ -73,8 +102,11 @@ button {
   padding: 10px 20px;
   /* Aumenta o tamanho do botão */
   font-size: 16px;
+  font-family: 'Metropolis';
+  font-weight: 500;
+  /* Usando a variante Medium */
   /* Aumenta o tamanho da fonte */
-  background-color: #28a745;
+  background-color: #1A73E8;
   /* Verde para o botão */
   color: white;
   border: none;
@@ -83,10 +115,9 @@ button {
 }
 
 #set-timer:hover {
-  background-color: #218838;
+  background-color: #145dbd;
   /* Verde mais escuro para o efeito hover */
 }
-
 
 .preset-buttons {
   display: flex;
@@ -97,21 +128,44 @@ button {
 }
 
 .preset-buttons button {
+  font-family: 'Metropolis';
   flex-grow: 1;
   /* Faz com que os botões cresçam igualmente */
   flex-basis: 0;
   /* Define o tamanho inicial como 0 para garantir que o flex-grow funcione corretamente */
   padding: 5px 10px;
   font-size: 14px;
-  background-color: #6c757d;
+  background-color: #202124;
   /* Tom de cinza para o botão */
   color: white;
-  border: none;
-  border-radius: 4px;
+  border-style: solid;
+  /* Define o estilo da borda como sólido */
+  border-color: #36373a;
+  /* Define a cor da borda como branca */
+  border-width: 2px;
+  /* Define a largura da borda como 1 pixel */
+
+  border-radius: 20px;
   cursor: pointer;
 }
 
 .preset-buttons button:hover {
-  background-color: #5a6268;
+  background-color: #36383b;
   /* Tom de cinza mais escuro para o efeito hover */
+}
+
+.yellow-text {
+  color: #EDAE00;
+}
+
+.red-text {
+  color: #D54235;
+}
+
+.blue-text {
+  color: #4082ED;
+}
+
+.green-text {
+  color: #0F9855;
 }

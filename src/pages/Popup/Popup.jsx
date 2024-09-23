@@ -17,7 +17,7 @@ const Popup = () => {
     const now = new Date(start.getTime());
 
     const currentMinutes = now.getMinutes();
-    const roundedMinutes = Math.floor((currentMinutes + minutesToAdd) / 15) * 15;
+    const roundedMinutes = Math.round((currentMinutes + minutesToAdd) / 15) * 15;
 
     if (roundedMinutes === 60) {
       now.setHours(now.getHours() + 1);
@@ -62,7 +62,7 @@ const Popup = () => {
             <button onClick={() => setTimeFromNow(45)}>{`${calculateFutureTime(45)}`}</button>
           </div>
         </div>
-        <button id="set-timer" onClick={sendMessageToContentScript}>Start</button>
+        <button id="set-timer" onClick={sendMessageToContentScript}>Set</button>
       </div>
       <hr />
       <div className="footer-container">
