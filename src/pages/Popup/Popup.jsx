@@ -1,8 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Popup.css';
 
 const Popup = () => {
   const [endTime, setEndTime] = useState('');
+
+  useEffect(() => {
+    // Obter a hora atual e adicionar 5 minutos
+    const currentTimePlusFive = new Date();
+    currentTimePlusFive.setMinutes(currentTimePlusFive.getMinutes() + 5);
+
+    // Definir o estado inicial com a hora formatada
+    setEndTime(calculateFutureTime(0, currentTimePlusFive));
+  }, []);
 
   function calculateFutureTime(minutesToAdd, start = new Date()) {
     const now = new Date(start.getTime());
