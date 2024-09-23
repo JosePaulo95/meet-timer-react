@@ -4,12 +4,26 @@ import './Popup.css';
 const Popup = () => {
   const [endTime, setEndTime] = useState('');
 
-  const adjustTimeBy = (minutesToAdd) => {
-    const now = new Date();
-    now.setMinutes(now.getMinutes() + minutesToAdd);
+  function calculateFutureTime(minutesToAdd, start = new Date()) {
+    const now = new Date(start.getTime());
 
-    const formattedTime = now.toTimeString().slice(0, 5);
-    setEndTime(formattedTime);
+    const currentMinutes = now.getMinutes();
+    const roundedMinutes = Math.floor((currentMinutes + minutesToAdd) / 15) * 15;
+
+    if (roundedMinutes === 60) {
+      now.setHours(now.getHours() + 1);
+      now.setMinutes(0);
+    } else {
+      now.setMinutes(roundedMinutes);
+    }
+
+    return now.toTimeString().slice(0, 5);
+  }
+
+
+  // Função para definir o horário no estado
+  const setTimeFromNow = (minutesToAdd) => {
+    setEndTime(calculateFutureTime(minutesToAdd));
   };
 
   const sendMessageToContentScript = () => {
@@ -24,6 +38,7 @@ const Popup = () => {
         <p className="description">Set a time to end the Google Meet call</p>
 
         <div className="input-group">
+          {/* O valor do input é controlado pelo estado endTime */}
           <input
             type="time"
             id="end-time-input"
@@ -32,9 +47,10 @@ const Popup = () => {
             placeholder="HH:MM"
           />
           <div className="preset-buttons">
-            <button onClick={() => adjustTimeBy(15)}>+15 minutos</button>
-            <button onClick={() => adjustTimeBy(30)}>+30 minutos</button>
-            <button onClick={() => adjustTimeBy(45)}>+45 minutos</button>
+            {/* Botões que calculam a hora exata e mostram no rótulo */}
+            <button onClick={() => setTimeFromNow(15)}>{`${calculateFutureTime(15)}`}</button>
+            <button onClick={() => setTimeFromNow(30)}>{`${calculateFutureTime(30)}`}</button>
+            <button onClick={() => setTimeFromNow(45)}>{`${calculateFutureTime(45)}`}</button>
           </div>
         </div>
         <button id="set-timer" onClick={sendMessageToContentScript}>Start</button>
