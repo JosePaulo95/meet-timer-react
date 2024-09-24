@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './Timer.css';
 
 const Timer = ({ endTimeStr }) => {
     const [remainingTime, setRemainingTime] = useState('00:00');
@@ -21,6 +22,11 @@ const Timer = ({ endTimeStr }) => {
             const currentTime = new Date().getTime();
             const remaining = endTime - currentTime;
 
+            if (remaining <= 0) {
+                setRemainingTime('00:00');
+                return;
+            }
+
             const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
 
@@ -28,24 +34,21 @@ const Timer = ({ endTimeStr }) => {
             const displaySeconds = seconds < 10 ? `0${seconds}` : seconds;
 
             setRemainingTime(`${displayMinutes}:${displaySeconds}`);
-
-            // Se o tempo acabou, limpa o intervalo
-            if (remaining <= 0) {
-                setRemainingTime('00:00');
-                clearInterval(interval);
-            }
         };
 
         // Atualiza o timer a cada segundo
         const interval = setInterval(updateTimer, 1000);
+
+        // Executa a primeira atualização imediatamente
+        updateTimer();
 
         // Limpa o intervalo quando o componente é desmontado
         return () => clearInterval(interval);
     }, [endTimeStr]);
 
     return (
-        <div>
-            <h1>Remaining Time: {remainingTime}</h1>
+        <div className='timer-container'>
+            <span className='timer'>{remainingTime}</span>
         </div>
     );
 };
