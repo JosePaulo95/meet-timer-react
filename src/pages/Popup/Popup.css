@@ -59,6 +59,24 @@ button {
   /* Espaço vertical entre os elementos */
 }
 
+.h-container {
+  display: flex;
+  /* Usando Flexbox para o layout horizontal */
+  align-items: center;
+  /* Alinhamento vertical no centro */
+  justify-content: center;
+  /* Espaço igual entre os elementos */
+  padding: 10px;
+}
+
+.logo {
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  width: 30px;
+  height: auto;
+}
+
 .description {
   max-width: 70%;
   font-size: 16px;

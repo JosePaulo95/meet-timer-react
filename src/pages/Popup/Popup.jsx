@@ -44,10 +44,8 @@ const Popup = () => {
   return (
     <div className="App">
       <div className="container">
-        <p className="description">Set a time to end the Google Meet call</p>
-
+        <p className="description">Set a time to end your Google Meet call</p>
         <div className="input-group">
-          {/* O valor do input é controlado pelo estado endTime */}
           <input
             type="time"
             id="end-time-input"
