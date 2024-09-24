@@ -32,3 +32,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         sendResponse({ status: 'Message received!' });
     }
 });
+
+chrome.storage.local.get('selectedEndTime', (result) => {
+    const storedEndTime = result.selectedEndTime;
+
+    if (storedEndTime) {
+        injectComponent(storedEndTime);
+    }
+});
+

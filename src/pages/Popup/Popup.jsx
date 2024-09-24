@@ -7,12 +7,11 @@ const Popup = () => {
   const [selectedEndTime, setSelectedEndTime] = useState('');
 
   useEffect(() => {
-    const storedInputEndTime = localStorage.getItem('selectedEndTime');
-
-    if (storedInputEndTime) {
-      setInputEndTime(storedInputEndTime);
+    chrome.storage.local.get('selectedEndTime', (result) => {
+      const storedInputEndTime = result.selectedEndTime || ''; // Se não houver, define como ''
+      setInputEndTime(storedInputEndTime); // Atualiza o estado, por exemplo
       setSelectedEndTime(storedInputEndTime);
-    }
+    });
   }, []);
 
   // Função para definir o horário no estado
@@ -22,7 +21,7 @@ const Popup = () => {
 
   const handleUserSetTime = () => {
     setSelectedEndTime(inputEndTime);
-    localStorage.setItem('selectedEndTime', inputEndTime);
+    chrome.storage.local.set({ selectedEndTime: inputEndTime })
 
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       chrome.tabs.sendMessage(tabs[0].id, { action: 'testMessage', data: inputEndTime });
@@ -32,7 +31,7 @@ const Popup = () => {
   const handleResetTimer = () => {
     setSelectedEndTime('');
     setInputEndTime('');
-    localStorage.removeItem('selectedEndTime');
+    chrome.storage.local.remove('selectedEndTime')
 
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       chrome.tabs.sendMessage(tabs[0].id, { action: 'testMessage', data: '' });
