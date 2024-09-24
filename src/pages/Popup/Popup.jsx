@@ -3,57 +3,49 @@ import { calculateFutureTime } from '../../../utils/time';
 import './Popup.css';
 
 const Popup = () => {
-  const [endTime, setEndTime] = useState('');
-  const [timerActive, setTimerActive] = useState(false);
+  const [inputEndTime, setInputEndTime] = useState('');
+  const [selectedEndTime, setSelectedEndTime] = useState('');
 
   useEffect(() => {
-    // Recupera o estado do localStorage ao iniciar o componente
-    const storedEndTime = localStorage.getItem('endTime');
-    const storedTimerActive = localStorage.getItem('timerActive') === 'true';
+    const storedInputEndTime = localStorage.getItem('selectedEndTime');
 
-    if (storedEndTime) {
-      setEndTime(storedEndTime);
+    if (storedInputEndTime) {
+      setInputEndTime(storedInputEndTime);
+      setSelectedEndTime(storedInputEndTime);
     }
-    setTimerActive(storedTimerActive);
   }, []);
-
-  useEffect(() => {
-    // Atualiza o localStorage sempre que o timerActive ou endTime mudar
-    localStorage.setItem('endTime', endTime);
-    localStorage.setItem('timerActive', timerActive);
-  }, [endTime, timerActive]);
 
   // Função para definir o horário no estado
   const setTimeFromNow = (minutesToAdd) => {
-    setEndTime(calculateFutureTime(minutesToAdd));
+    setInputEndTime(calculateFutureTime(minutesToAdd));
   };
 
-  const sendMessageToContentScript = () => {
-    setTimerActive(true);
+  const handleUserSetTime = () => {
+    setSelectedEndTime(inputEndTime);
+    localStorage.setItem('selectedEndTime', inputEndTime);
+
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      chrome.tabs.sendMessage(tabs[0].id, { action: 'testMessage', data: endTime });
+      chrome.tabs.sendMessage(tabs[0].id, { action: 'testMessage', data: inputEndTime });
     });
   };
 
   const handleResetTimer = () => {
-    setTimerActive(false);
-    // Limpa o localStorage ao cancelar o temporizador
-    localStorage.removeItem('endTime');
-    localStorage.removeItem('timerActive');
+    setSelectedEndTime('');
+    localStorage.removeItem('selectedEndTime');
   };
 
   return (
     <div className="App">
       <div className="container">
-        {!timerActive ? (
+        {!selectedEndTime ? (
           <>
             <p className="description">Set a time to end your Google Meet call</p>
             <div className="input-group">
               <input
                 type="time"
                 id="end-time-input"
-                value={endTime}
-                onChange={(e) => setEndTime(e.target.value)}
+                value={inputEndTime}
+                onChange={(e) => setInputEndTime(e.target.value)}
                 placeholder="HH:MM"
               />
               <div className="preset-buttons">
@@ -62,7 +54,7 @@ const Popup = () => {
                 <button onClick={() => setTimeFromNow(45)}>{`${calculateFutureTime(45)}`}</button>
               </div>
             </div>
-            <button id="set-timer" onClick={sendMessageToContentScript}>Set</button>
+            <button id="set-timer" onClick={handleUserSetTime}>Set</button>
           </>
         ) : (
           <button className='red-button' onClick={handleResetTimer}>Cancel</button>
