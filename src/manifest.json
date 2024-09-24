@@ -29,7 +29,8 @@
     }
   ],
   "permissions": [
-    "storage"
+    "storage",
+    "tabs"
   ],
   "devtools_page": "devtools.html",
   "web_accessible_resources": [

@@ -23,8 +23,10 @@ const Popup = () => {
     setSelectedEndTime(inputEndTime);
     chrome.storage.local.set({ selectedEndTime: inputEndTime })
 
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      chrome.tabs.sendMessage(tabs[0].id, { action: 'testMessage', data: inputEndTime });
+    chrome.tabs.query({}, (tabs) => {
+      tabs.forEach((tab) => {
+        chrome.tabs.sendMessage(tab.id, { action: 'testMessage', data: inputEndTime });
+      })
     });
   };
 
@@ -33,8 +35,10 @@ const Popup = () => {
     setInputEndTime('');
     chrome.storage.local.remove('selectedEndTime')
 
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      chrome.tabs.sendMessage(tabs[0].id, { action: 'testMessage', data: '' });
+    chrome.tabs.query({}, (tabs) => {
+      tabs.forEach((tab) => {
+        chrome.tabs.sendMessage(tab.id, { action: 'testMessage', data: '' });
+      })
     });
   };
 
