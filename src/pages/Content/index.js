@@ -1,14 +1,26 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import MyComponent from './MyComponent'; // Importa seu componente React
+import { createRoot } from 'react-dom/client';
+import Timer from './Timer'; // Ajuste o caminho de importação se necessário
 
-console.log('Content script works!');
-console.log('Must reload extension for modifications to take effect.');
+// Função para injetar o componente React na página
+const injectComponent = (message) => {
+    const existingElement = document.getElementById('my-react-component');
+    if (!existingElement) {
+        const element = document.createElement('div');
+        element.id = 'my-react-component';
+        document.body.appendChild(element);
+    }
 
-// Cria um container para o React component
-const container = document.createElement('div');
-container.id = 'my-react-container';
-document.body.appendChild(container);
+    const container = document.getElementById('my-react-component');
+    const root = createRoot(container); // Cria a root para renderizar o componente
+    root.render(<Timer endTimeStr={message} />);
+};
 
-// Monta o componente React no container
-ReactDOM.render(<MyComponent />, container);
+// Escuta mensagens do popup
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.action === 'testMessage') {
+        // Injetar o componente com a mensagem recebida
+        injectComponent(request.data);
+        sendResponse({ status: 'Message received!' });
+    }
+});

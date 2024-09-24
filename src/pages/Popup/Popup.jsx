@@ -36,8 +36,8 @@ const Popup = () => {
   };
 
   const sendMessageToContentScript = () => {
-    chrome.runtime.sendMessage({ action: 'setTimer', time: endTime }, (response) => {
-      console.log('Response from content script:', response);
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      chrome.tabs.sendMessage(tabs[0].id, { action: 'testMessage', data: endTime });
     });
   };
 
