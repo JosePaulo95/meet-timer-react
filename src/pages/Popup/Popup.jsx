@@ -31,7 +31,12 @@ const Popup = () => {
 
   const handleResetTimer = () => {
     setSelectedEndTime('');
+    setInputEndTime('');
     localStorage.removeItem('selectedEndTime');
+
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      chrome.tabs.sendMessage(tabs[0].id, { action: 'testMessage', data: '' });
+    });
   };
 
   return (

@@ -2,9 +2,20 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import Timer from './Timer'; // Ajuste o caminho de importação se necessário
 
-// Função para injetar o componente React na página
 const injectComponent = (message) => {
     const existingElement = document.getElementById('my-react-component');
+
+    // Se message for null ou uma string vazia
+    if (!message) {
+        debugger;
+        // Remove o componente existente se ele estiver no DOM
+        if (existingElement) {
+            existingElement.remove();
+        }
+        return; // Sai da função
+    }
+
+    // Se o componente não existir, cria um novo
     if (!existingElement) {
         const element = document.createElement('div');
         element.id = 'my-react-component';
@@ -15,6 +26,7 @@ const injectComponent = (message) => {
     const root = createRoot(container); // Cria a root para renderizar o componente
     root.render(<Timer endTimeStr={message} />);
 };
+
 
 // Escuta mensagens do popup
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
