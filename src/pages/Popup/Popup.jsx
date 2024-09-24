@@ -5,19 +5,14 @@ const Popup = () => {
   const [endTime, setEndTime] = useState('');
 
   useEffect(() => {
-    // Obter a hora atual e adicionar 5 minutos
-    const currentTimePlusFive = new Date();
-    currentTimePlusFive.setMinutes(currentTimePlusFive.getMinutes() + 5);
-
-    // Definir o estado inicial com a hora formatada
-    setEndTime(calculateFutureTime(0, currentTimePlusFive));
+    setEndTime(calculateFutureTime(0));
   }, []);
 
   function calculateFutureTime(minutesToAdd, start = new Date()) {
     const now = new Date(start.getTime());
 
     const currentMinutes = now.getMinutes();
-    const roundedMinutes = Math.round((currentMinutes + minutesToAdd) / 15) * 15;
+    const roundedMinutes = minutesToAdd ? Math.round((currentMinutes + minutesToAdd) / 15) * 15 : currentMinutes;
 
     if (roundedMinutes === 60) {
       now.setHours(now.getHours() + 1);
