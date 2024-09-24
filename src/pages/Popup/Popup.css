@@ -176,8 +176,25 @@ button {
   color: #EDAE00;
 }
 
-.red-text {
-  color: #D54235;
+.red-button {
+  background-color: #D54235;
+  padding: 10px 20px;
+  /* Aumenta o tamanho do botão */
+  font-size: 16px;
+  font-family: 'Metropolis';
+  font-weight: 500;
+  /* Usando a variante Medium */
+  /* Aumenta o tamanho da fonte */
+  /* Verde para o botão */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.red-button:hover {
+  background-color: #145dbd;
+  /* Verde mais escuro para o efeito hover */
 }
 
 .blue-text {
