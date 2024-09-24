@@ -5,17 +5,13 @@ import Timer from './Timer'; // Ajuste o caminho de importação se necessário
 const injectComponent = (message) => {
     const existingElement = document.getElementById('my-react-component');
 
-    // Se message for null ou uma string vazia
     if (!message) {
-        debugger;
-        // Remove o componente existente se ele estiver no DOM
         if (existingElement) {
             existingElement.remove();
         }
-        return; // Sai da função
+        return;
     }
 
-    // Se o componente não existir, cria um novo
     if (!existingElement) {
         const element = document.createElement('div');
         element.id = 'my-react-component';
