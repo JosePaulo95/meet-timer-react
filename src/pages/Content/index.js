@@ -1,7 +1,49 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import Timer from './Timer'; // Ajuste o caminho de importação se necessário
-import { calcRemainingTime } from '../../../utils/time';
+import { countForEndMeet } from './modules/endMeet';
+
+// Função para inserir o botão de forma idêntica
+function insertButtonLikeOriginal() {
+    const container = document.querySelector('.R5ccN');
+
+    if (container && !container.querySelector('.novo-botao')) {
+        const buttonHTML = `
+        <div class="novo-botao">
+            <span data-is-tooltip-wrapper="true">
+                <button style="background-color: #EDAE00" class="VYBDae-Bz112c-LgbsSe VYBDae-Bz112c-LgbsSe-OWXEXe-SfQLQb-suEOdc hk9qKe Iootmd vLQezd" 
+                    aria-label="Novo botão" 
+                    data-tooltip-enabled="true" 
+                    role="button">
+                    <span aria-hidden="true" class="VYBDae-Bz112c-kBDsod-Rtc0Jf">
+                        <i aria-hidden="true" class="google-symbols ebW6mc">schedule</i>
+                    </span>
+                </button>
+                <div class=".tooltip ne2Ple-oshW8e-V67aGc" role="tooltip" aria-hidden="true">Novo botão</div>
+            </span>
+        </div>`;
+
+        const referenceElement = container.querySelector('.NHaLPe');
+        if (referenceElement) {
+            // Insere o novo botão logo após o botão existente
+            referenceElement.insertAdjacentHTML('beforebegin', buttonHTML);
+        }
+    }
+}
+
+// Função para observar mudanças no DOM
+function observeDOMChanges() {
+    const targetNode = document.body;
+
+    const observer = new MutationObserver(() => {
+        insertButtonLikeOriginal();
+    });
+
+    observer.observe(targetNode, { childList: true, subtree: true });
+}
+
+// Iniciar o observador
+observeDOMChanges();
 
 const injectComponent = (message) => {
     const existingElement = document.getElementById('my-react-component');
@@ -23,61 +65,6 @@ const injectComponent = (message) => {
     const root = createRoot(container); // Cria a root para renderizar o componente
     root.render(<Timer endTimeStr={message} />);
 };
-
-function endMeeting() {
-    function clickEndCallButton() {
-        var firstButton = document.querySelector('[jsname="CQylAd"]');
-        if (firstButton) {
-            firstButton.click();
-            // Espere o popup de confirmação aparecer
-            setTimeout(clickConfirmEndForEveryoneButton, 500); // Ajuste o tempo conforme necessário
-        } else {
-            console.log('Primeiro botão não encontrado');
-        }
-    }
-
-    // Função para clicar no botão com jsname="V67aGc"
-    function clickConfirmEndForEveryoneButton() {
-        var secondButton = document.querySelector('.VfPpkd-T0kwCb button[jscontroller="soHxf"] span[jsname="V67aGc"]');
-        if (secondButton) {
-            secondButton.click();
-        } else {
-            console.log('Segundo botão não encontrado');
-        }
-    }
-
-    // Execute a função para clicar no primeiro botão
-    clickEndCallButton();
-}
-
-let interval;
-
-function countForEndMeet(endTimeStr) {
-    // Se endTimeStr for nulo ou vazio, limpar o intervalo e sair
-    if (!endTimeStr) {
-        clearInterval(interval);
-        console.log("End time is not set. Stopping the interval.");
-        return;
-    }
-
-    console.log("Starting countdown for meet...");
-
-    // Limpa qualquer intervalo anterior antes de começar um novo
-    clearInterval(interval);
-
-    // Inicia um novo intervalo
-    interval = setInterval(function () {
-        const remainingTimeStr = calcRemainingTime(endTimeStr);
-        console.log("Meet will end in: " + remainingTimeStr);
-
-        // Se o tempo restante for "00:00", encerre o meet e limpe o intervalo
-        if (remainingTimeStr.includes("00:00")) {
-            clearInterval(interval);
-            endMeeting(); // Supondo que a função endMeeting() já exista
-            return;
-        }
-    }, 1000);
-}
 
 // Escuta mensagens do popup
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
