@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { calcRemainingTime, calculateFutureTime } from '../../../utils/time';
 import './Popup.css';
+import icon from '../../assets/img/meet-icon.png';
 
 const Popup = () => {
   const [inputEndTime, setInputEndTime] = useState('');
@@ -79,7 +80,19 @@ const Popup = () => {
           <>
             <p className="description">Any Meet you host will automatically end in:</p>
             <h1>{remainingTime}</h1>
-            <button className='red-button' onClick={handleResetTimer}>Cancel</button>
+            <div className="h-container">
+              <a
+                href="https://meet.google.com/new"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <button className='grey-button'>
+                  <img src={icon} alt="extension icon" />
+                  Create
+                </button>
+              </a>
+              <button className='red-button' onClick={handleResetTimer}>Cancel</button>
+            </div>
           </>
         )}
       </div>
