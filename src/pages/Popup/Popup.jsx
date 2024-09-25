@@ -1,16 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { calculateFutureTime } from '../../../utils/time';
+import { calcRemainingTime, calculateFutureTime } from '../../../utils/time';
 import './Popup.css';
 
 const Popup = () => {
   const [inputEndTime, setInputEndTime] = useState('');
   const [selectedEndTime, setSelectedEndTime] = useState('');
+  const [remainingTime, setRemainingTime] = useState('--:--');
 
   useEffect(() => {
     chrome.storage.local.get('selectedEndTime', (result) => {
       const storedInputEndTime = result.selectedEndTime || ''; // Se não houver, define como ''
       setInputEndTime(storedInputEndTime); // Atualiza o estado, por exemplo
       setSelectedEndTime(storedInputEndTime);
+
+      if (storedInputEndTime) {
+        setInterval(() => {
+          setRemainingTime(calcRemainingTime(storedInputEndTime))
+        }, 1000);
+      }
     });
   }, []);
 
@@ -28,6 +35,10 @@ const Popup = () => {
         chrome.tabs.sendMessage(tab.id, { action: 'testMessage', data: inputEndTime });
       })
     });
+
+    setInterval(() => {
+      setRemainingTime(calcRemainingTime(inputEndTime))
+    }, 1000);
   };
 
   const handleResetTimer = () => {
@@ -65,7 +76,11 @@ const Popup = () => {
             <button id="set-timer" onClick={handleUserSetTime}>Set</button>
           </>
         ) : (
-          <button className='red-button' onClick={handleResetTimer}>Cancel</button>
+          <>
+            <p className="description">Any Meet you host will automatically end in:</p>
+            <h1>{remainingTime}</h1>
+            <button className='red-button' onClick={handleResetTimer}>Cancel</button>
+          </>
         )}
       </div>
       <hr />
