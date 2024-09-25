@@ -1,24 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { calcRemainingTime, calculateFutureTime } from '../../../utils/time';
+import { calculateFutureTime } from '../../../utils/time';
 import './Popup.css';
 import icon from '../../assets/img/meet-icon.png';
+import Timer2 from '../../containers/Timer';
 
 const Popup = () => {
   const [inputEndTime, setInputEndTime] = useState('');
   const [selectedEndTime, setSelectedEndTime] = useState('');
-  const [remainingTime, setRemainingTime] = useState('--:--');
 
   useEffect(() => {
     chrome.storage.local.get('selectedEndTime', (result) => {
       const storedInputEndTime = result.selectedEndTime || ''; // Se não houver, define como ''
       setInputEndTime(storedInputEndTime); // Atualiza o estado, por exemplo
       setSelectedEndTime(storedInputEndTime);
-
-      if (storedInputEndTime) {
-        setInterval(() => {
-          setRemainingTime(calcRemainingTime(storedInputEndTime))
-        }, 1000);
-      }
     });
   }, []);
 
@@ -36,10 +30,6 @@ const Popup = () => {
         chrome.tabs.sendMessage(tab.id, { action: 'testMessage', data: inputEndTime });
       })
     });
-
-    setInterval(() => {
-      setRemainingTime(calcRemainingTime(inputEndTime))
-    }, 1000);
   };
 
   const handleResetTimer = () => {
@@ -78,8 +68,8 @@ const Popup = () => {
           </>
         ) : (
           <>
-            <p className="description">Any Meet you host will automatically end in:</p>
-            <h1>{remainingTime}</h1>
+            <p className="description">Any Meet you host will automatically end at {selectedEndTime}</p>
+            <Timer2 endTimeStr={selectedEndTime}></Timer2>
             <div className="h-container">
               <a
                 href="https://meet.google.com/new"

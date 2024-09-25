@@ -1,0 +1,21 @@
+.timer-container {
+    position: fixed;
+    top: 1px;
+    right: 5px;
+    background-color: rgba(256, 256, 256, 0.7);
+    border: 1px solid black;
+    border-radius: 5%;
+    padding: 10px;
+    z-index: 1000;
+    min-height: 25px;
+    min-width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.timer {
+    color: black;
+    font-size: 21px;
+    font-family: monospace;
+}
